@@ -537,9 +537,7 @@
                                                                                               }</td>
                                                                                               <td>${quantity}</td>
                                                                                               <td>€${discount}</td>
-                                                                                              <td>€${unitPrice.toFixed(
-                                                                                                2
-                                                                                              )}</td>
+                                                                                              <td>€${unitPrice}</td>
                                                                                               <td>${new Date(
                                                                                                 line.deliveryDate
                                                                                               ).toLocaleDateString()}</td>
