@@ -38,21 +38,24 @@ clearAndRefresh();
         const searchText = event.target.value;
         event.preventDefault();
 
+          trySearchBarFiltering(searchText);
         // Fetch and filter orders
-        fetchAndDisplayOrdersOr(
-          searchText,
-          searchText,
-          searchText,
-          searchText,
-            searchText,
-          searchText
-        );
+       
       }, 500); // 500 milliseconds debounce time
     });
   });
 
   // Event listener for the search button
 
+function trySearchBarFiltering(searchText){
+    fetchAndDisplayOrdersOr(
+          searchText,
+          searchText,
+          searchText,
+          searchText,
+          searchText
+        );
+}
 function searchOnClick(){
   
       // Get input fields values to match
@@ -235,8 +238,7 @@ const documentDateInput = document.getElementById("input6").value; // Get date i
     customerNameInput,
     customerLastNameInput,
     storeIdInput,
-    orderNumberInput,
-      documentDateInput
+    orderNumberInput
   ) {
     console.log(customerIdInput);
     fetch(
