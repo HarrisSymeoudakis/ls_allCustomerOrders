@@ -448,7 +448,7 @@
       }
 
       function showEditablePopup(orderIndex) {
-        fetch("https://ls-customerserver.onrender.com/swagger/customerOrders")
+        fetch("https://ls-customerserver.onrender.com/swagger/AllCustomerActiveOrders")
           .then((response) => response.json())
           .then((data) => {
             const order = data[orderIndex];
@@ -825,7 +825,7 @@
             }
 
             // Recalculate the total amount
-            const totalAmount = calculateTotalAmount(order.lines);
+            const totalAmount = (order.lines);
 
             // Update the total amount in the modal
             document.querySelector(
@@ -881,7 +881,7 @@
         let totalAmount = 0;
         lines.forEach((line) => {
           const quantity = line.quantities.quantity;
-          const unitPrice = line.unitPrice;
+          const unitPrice = line.unitPrice ? line.unitPrice:5 ;
           const discount =
             line.discounts && line.discounts.length > 0
               ? line.discounts[0].amount
