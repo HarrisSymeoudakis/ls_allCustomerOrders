@@ -508,7 +508,7 @@
                                                                                             .quantities
                                                                                             .quantity;
                                                                                         const unitPrice =
-                                                                                          line.unitPrice;
+                                                                                          line.unitPrice?line.unitPrice : 200;
                                                                                         const discount =
                                                                                           line.discounts &&
                                                                                           line
