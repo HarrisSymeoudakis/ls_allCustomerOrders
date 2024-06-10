@@ -1,5 +1,5 @@
-// Clear button functionality
-document.getElementById("delete").addEventListener("click", () => {
+function clearAndRefresh() {
+    // Clear input fields
     document.getElementById("input1").value = "";
     document.getElementById("input2").value = "";
     document.getElementById("input3").value = "";
@@ -7,24 +7,19 @@ document.getElementById("delete").addEventListener("click", () => {
     document.getElementById("input5").value = "";
     document.getElementById("input6").value = "";
 
+    // Get input values after clearing
     const customerIdInput = document.getElementById("input1").value;
-      const customerNameInput = document.getElementById("input2").value;
-      const customerLastNameInput = document.getElementById("input3").value;
-      const storeIdInput = document.getElementById("input4").value;
-      const orderNumberInput = parseInt(
-        document.getElementById("input5").value,
-        10
-      );
+    const customerNameInput = document.getElementById("input2").value;
+    const customerLastNameInput = document.getElementById("input3").value;
+    const storeIdInput = document.getElementById("input4").value;
+    const orderNumberInput = parseInt(document.getElementById("input5").value, 10);
 
-    fetchAndDisplayOrders(
-        customerIdInput,
-        customerNameInput,
-        customerLastNameInput,
-        storeIdInput,
-        orderNumberInput
-      );
-  });
+    // Fetch and display orders with cleared input values
+    fetchAndDisplayOrders(customerIdInput, customerNameInput, customerLastNameInput, storeIdInput, orderNumberInput);
+}
 
+
+clearAndRefresh();
   fetch("https://ls-allcustomerordersserver.onrender.com/swagger/AllCustomerActiveOrders")
     .then((response) => response.json())
     .then((data) => {
