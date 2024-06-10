@@ -186,8 +186,8 @@ clearAndRefresh();
   // Event listener for the search button
 
 
-function searchOnClick(){
-    
+function searchOnClick(event){
+    event.preventDefault();
     fetchAndDisplayOrders();
      
 }
