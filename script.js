@@ -611,7 +611,7 @@
       }
 
       function showPopup(orderIndex, text) {
-        fetch("https://ls-customerserver.onrender.com/swagger/customerOrders")
+       fetch("https://ls-allcustomerordersserver.onrender.com/swagger/AllCustomerActiveOrders")
           .then((response) => response.json())
           .then((data) => {
             const order = data[orderIndex];
