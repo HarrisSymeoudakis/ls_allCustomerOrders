@@ -186,13 +186,12 @@ clearAndRefresh();
   // Event listener for the search button
 
 
-function searchOnClick(event){
-    event.preventDefault();
-    fetchAndDisplayOrders();
+ function searchOnClick(event) {
+      event.preventDefault();
+     fetchAndDisplayOrders();}
      
-}
 
-
+document.getElementById("searchButton").addEventListener("click", searchOnClick);
 
 
   function showBlankPopup() {
