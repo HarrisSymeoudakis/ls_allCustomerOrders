@@ -8,9 +8,7 @@
         document.getElementById("input6").value = "";
       });
 
-      fetch(
-        "https://ls-allcustomerordersserver.onrender.com/swagger/AllCustomerActiveOrders"
-      )
+      fetch("https://ls-allcustomerordersserver.onrender.com/swagger/AllCustomerActiveOrders")
         .then((response) => response.json())
         .then((data) => {
           console.log(data);
@@ -449,7 +447,7 @@
       }
 
       function showEditablePopup(orderIndex) {
-        fetch("https://ls-customerserver.onrender.com/swagger/AllCustomerActiveOrders")
+         fetch("https://ls-allcustomerordersserver.onrender.com/swagger/AllCustomerActiveOrders")
           .then((response) => response.json())
           .then((data) => {
             const order = data[orderIndex];
