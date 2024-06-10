@@ -1,3 +1,151 @@
+function fetchAndDisplayOrders() {
+
+    const customerIdInput = document.getElementById("input1").value;
+const customerNameInput = document.getElementById("input2").value;
+const customerLastNameInput = document.getElementById("input3").value;
+const storeIdInput = document.getElementById("input4").value;
+const orderNumberInput = parseInt(document.getElementById("input5").value, 10);
+const documentDateInput = document.getElementById("input6").value; // Get date input value
+const searchBarInput = document.getElementById("search").value; // Get search bar input value
+
+  fetch("https://ls-allcustomerordersserver.onrender.com/swagger/AllCustomerActiveOrders")
+    .then((response) => response.json())
+    .then((data) => {
+      console.log(data);
+
+        
+      // Create table structure
+      const orderResultsDiv = document.querySelector(".orderResults");
+      const tableHTML = `
+        <div class="row">
+          <div class="col-lg-12">
+            <div class="main-box no-header clearfix">
+              <div class="main-box-body clearfix">
+                <div class="table-responsive">
+                  <table class="table user-list">
+                    <thead>
+                      <tr>
+                        <th>Order Number</th>
+                        <th>Document Date</th>
+                        <th>Store ID</th>
+                        <th>Customer ID</th>
+                        <th>Customer Last Name</th>
+                        <th>Total Quantity</th>
+                        <th>Total Amount</th>
+                        <th>Delivery Date</th>
+                        <th>Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody id="customfilteringbody">
+                      <!-- Filtered orders will be inserted here -->
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>`;
+      orderResultsDiv.innerHTML = tableHTML;
+
+      const tbodyOrders = document.getElementById("customfilteringbody");
+
+      // Clear the current content of tbodyOrders
+      tbodyOrders.innerHTML = "";
+
+      // Filter data with AND condition among the six input fields
+      const filteredOrders = data.filter((order) => {
+        const header = order.header;
+        return (
+          (!customerIdInput || header.customer.id.toLowerCase() === customerIdInput.toLowerCase()) &&
+          (!customerNameInput || header.customer.firstName.toLowerCase() === customerNameInput.toLowerCase()) &&
+          (!customerLastNameInput || header.customer.lastName.toLowerCase() === customerLastNameInput.toLowerCase()) &&
+          (!storeIdInput || header.storeId.toLowerCase() === storeIdInput.toLowerCase()) &&
+          (!orderNumberInput || header.documentKey.number === orderNumberInput) &&
+          (!documentDateInput || new Date(header.documentDate).toISOString().split('T')[0] === documentDateInput)
+        );
+      });
+
+      // Filter data with OR condition for the search bar input
+      const searchFilteredOrders = data.filter((order) => {
+        const header = order.header;
+        const searchTerm = searchBarInput.toLowerCase();
+        return (
+          header.customer.id.toLowerCase().includes(searchTerm) ||
+          header.customer.firstName.toLowerCase().includes(searchTerm) ||
+          header.customer.lastName.toLowerCase().includes(searchTerm) ||
+          header.storeId.toLowerCase().includes(searchTerm) ||
+          header.documentKey.number.toString().includes(searchTerm) ||
+          new Date(header.documentDate).toISOString().split('T')[0].includes(searchTerm)
+        );
+      });
+
+      // Combine results with AND condition
+      const finalFilteredOrders = filteredOrders.filter((order) =>
+        searchFilteredOrders.includes(order)
+      );
+
+      // Populate table with final filtered orders
+      finalFilteredOrders.forEach((order, index) => {
+        const header = order.header;
+        const lines = order.lines || [];
+        if (header) {
+          // Calculate total quantity and total amount for the order
+          let totalQuantity = 0;
+          let totalAmount = 0;
+          lines.forEach((line) => {
+            const quantity = line.quantities.quantity;
+            const unitPrice = line.unitPrice || 0; // Assuming unitPrice is present in the line item
+            const discount = line.discounts && line.discounts.length > 0 ? line.discounts[0].amount : 0;
+            const total = quantity * unitPrice - discount;
+            totalQuantity += quantity;
+            totalAmount += total;
+          });
+
+          // Create a new row for the order
+          const newRowOrder = document.createElement("tr");
+          newRowOrder.setAttribute("id", "order-row-" + header.documentKey.number);
+          newRowOrder.innerHTML = `
+            <td>${header.documentKey.number}</td>
+            <td>${new Date(header.documentDate).toLocaleDateString()}</td>
+            <td>${header.storeId || "N/A"}</td>
+            <td>${header.customer.id}</td>
+            <td>${header.customer.lastName}</td>
+            <td>${totalQuantity}</td>
+            <td>${totalAmount.toFixed(2)}</td>
+            <td>${new Date(header.deliveryDate).toLocaleDateString()}</td>
+            <td style="width: 20%;">
+              <a href="#" class="table-link text-warning" onclick="showOrder(${index})">
+                <span class="fa-stack">
+                  <i class="fa fa-square fa-stack-2x"></i>
+                  <i class="fa fa-search-plus fa-stack-1x fa-inverse"></i>
+                </span>
+              </a>
+              <a href="#" class="table-link text-info" onclick="editOrder(${index})">
+                <span class="fa-stack">
+                  <i class="fa fa-square fa-stack-2x"></i>
+                  <i class="fa fa-pencil fa-stack-1x fa-inverse"></i>
+                </span>
+              </a>
+              <a href="#" class="table-link danger" onclick="confirmDelete(${header.documentKey.number})">
+                <span class="fa-stack">
+                  <i class="fa fa-square fa-stack-2x"></i>
+                  <i class="fa fa-trash-o fa-stack-1x fa-inverse"></i>
+                </span>
+              </a>
+            </td>
+          `;
+
+          // Append the new row to the tbody
+          tbodyOrders.appendChild(newRowOrder);
+        }
+      });
+    })
+    .catch((error) => console.error("Error fetching data:", error));
+}
+
+
+
+
 function clearAndRefresh() {
     // Clear input fields
     document.getElementById("input1").value = "";
@@ -7,20 +155,12 @@ function clearAndRefresh() {
     document.getElementById("input5").value = "";
     document.getElementById("input6").value = "";
 
-    // Get input values after clearing
-    const customerIdInput = document.getElementById("input1").value;
-    const customerNameInput = document.getElementById("input2").value;
-    const customerLastNameInput = document.getElementById("input3").value;
-    const storeIdInput = document.getElementById("input4").value;
-    const orderNumberInput = parseInt(document.getElementById("input5").value, 10);
-    const documentDateInput = document.getElementById("input6").value; // Get date input value
-
-    // Fetch and display orders with cleared input values
-    fetchAndDisplayOrders(customerIdInput, customerNameInput, customerLastNameInput, storeIdInput, orderNumberInput,documentDateInput);
+    
+    fetchAndDisplayOrders();
 }
 
-
 clearAndRefresh();
+
   fetch("https://ls-allcustomerordersserver.onrender.com/swagger/AllCustomerActiveOrders")
     .then((response) => response.json())
     .then((data) => {
@@ -35,11 +175,9 @@ clearAndRefresh();
     searchInput.addEventListener("input", (event) => {
       clearTimeout(debounceTimeout);
       debounceTimeout = setTimeout(() => {
-        const searchText = event.target.value;
-        event.preventDefault();
-
-          trySearchBarFiltering(searchText);
-        // Fetch and filter orders
+          
+        fetchAndDisplayOrders();
+        
        
       }, 500); // 500 milliseconds debounce time
     });
@@ -47,161 +185,13 @@ clearAndRefresh();
 
   // Event listener for the search button
 
-function trySearchBarFiltering(searchText){
-    fetchAndDisplayOrdersOr(
-          searchText,
-          searchText,
-          searchText,
-        searchText,
-          searchText,
-          searchText
-        );
-}
+
 function searchOnClick(){
-
-      const customerIdInput = document.getElementById("input1").value;
-      const customerNameInput = document.getElementById("input2").value;
-      const customerLastNameInput = document.getElementById("input3").value;
-      const storeIdInput = document.getElementById("input4").value;
-      const orderNumberInput = parseInt( document.getElementById("input5").value, 10);
-      const documentDateInput = document.getElementById("input6").value; // Get date input value
-      fetchAndDisplayOrdersCombined(customerIdInput, customerNameInput, customerLastNameInput, storeIdInput, orderNumberInput, documentDateInput);
+    
+    fetchAndDisplayOrders();
+     
 }
 
-function fetchAndDisplayOrdersCombined(customerIdInput, customerNameInput, customerLastNameInput, storeIdInput, orderNumberInput, documentDateInput) {
-    fetch("https://ls-allcustomerordersserver.onrender.com/swagger/AllCustomerActiveOrders").then((response) => response.json()).then((data) => {
-        console.log(data);
-
-        // Create table structure
-        const orderResultsDiv = document.querySelector(".orderResults");
-        const tableHTML = `
-                          <div class="row">
-                            <div class="col-lg-12">
-                              <div class="main-box no-header clearfix">
-                                <div class="main-box-body clearfix">
-                                  <div class="table-responsive">
-                            <table class="table user-list">
-                                  <thead>
-                                      <tr>
-                                          <th>Order Number</th>
-                                          <th>Document Date</th>
-                                          <th>Store ID</th>
-                                          <th>Customer ID</th>
-                                          <th>Customer Last Name</th>
-                                          <th>Total Quantity</th>
-                                          <th>Total Amount</th>
-                                          <th>Delivery Date</th>
-                                          <th>Actions</th>
-                                      </tr>
-                                  </thead>
-                                  <tbody id="customfilteringbody">
-                                      <!-- Filtered orders will be inserted here -->
-                                  </tbody>
-                              </table>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                          </div>`;
-        orderResultsDiv.innerHTML = tableHTML;
-
-        const tbodyOrders = document.getElementById("customfilteringbody");
-
-        // Clear the current content of tbodyOrders
-        tbodyOrders.innerHTML = "";
-
-        // Filter orders based on AND conditions
-        const andFilteredOrders = data.filter((order) => {
-            const header = order.header;
-            return (
-                (!customerIdInput || header.customer.id.toLowerCase() === customerIdInput.toLowerCase()) &&
-                (!customerNameInput || header.customer.firstName.toLowerCase() === customerNameInput.toLowerCase()) &&
-                (!customerLastNameInput || header.customer.lastName.toLowerCase() === customerLastNameInput.toLowerCase()) &&
-                (!storeIdInput || header.storeId.toLowerCase() === storeIdInput.toLowerCase()) &&
-                (!orderNumberInput || header.documentKey.number === orderNumberInput) &&
-                (!documentDateInput || new Date(header.documentDate).toISOString().split('T')[0] === documentDateInput) // Compare date part only
-            );
-        });
-
-        // Filter orders based on OR conditions
-        const orFilteredOrders = data.filter((order) => {
-            const header = order.header;
-            return (
-                (customerIdInput && header.customer.id.toLowerCase() === customerIdInput.toLowerCase()) ||
-                (customerNameInput && header.customer.firstName.toLowerCase() === customerNameInput.toLowerCase()) ||
-                (customerLastNameInput && header.customer.lastName.toLowerCase() === customerLastNameInput.toLowerCase()) ||
-                (storeIdInput && header.storeId.toLowerCase() === storeIdInput.toLowerCase()) ||
-                (orderNumberInput && header.documentKey.number === orderNumberInput) ||
-                (documentDateInput && new Date(header.documentDate).toISOString().split('T')[0] === documentDateInput) // Compare date part only
-            );
-        });
-
-        // Combine AND and OR filtered orders without duplicates
-        const combinedOrders = [...new Set([...andFilteredOrders, ...orFilteredOrders])];
-
-        // Display combined orders
-        displayOrders(combinedOrders);
-    }).catch((error) => console.error("Error fetching data:", error));
-}
-
-function displayOrders(orders) {
-    const tbodyOrders = document.getElementById("customfilteringbody");
-    tbodyOrders.innerHTML = ""; // Clear existing content
-
-    orders.forEach((order, index) => {
-        const header = order.header;
-        const lines = order.lines || [];
-
-        // Calculate total quantity and total amount for the order
-        let totalQuantity = 0;
-        let totalAmount = 0;
-        lines.forEach((line) => {
-            const quantity = line.quantities.quantity;
-            const unitPrice = line.unitPrice || 0; // Assuming unitPrice is present in the line item
-            const discount = line.discounts && line.discounts.length > 0 ? line.discounts[0].amount : 0;
-            const total = quantity * unitPrice - discount;
-            totalQuantity += quantity;
-            totalAmount += total;
-        });
-
-        // Create a new row for the order
-        const newRowOrder = document.createElement("tr");
-        newRowOrder.setAttribute("id", "order-row-" + header.documentKey.number);
-        newRowOrder.innerHTML = `
-            <td>${header.documentKey.number}</td>
-            <td>${new Date(header.documentDate).toLocaleDateString()}</td>
-            <td>${header.storeId || "N/A"}</td>
-            <td>${header.customer.id}</td>
-            <td>${header.customer.lastName}</td>
-            <td>${totalQuantity}</td>
-            <td>${totalAmount.toFixed(2)}</td>
-            <td>${new Date(header.deliveryDate).toLocaleDateString()}</td>
-            <td style="width: 20%;">
-                <a href="#" class="table-link text-warning" onclick="showOrder(${index})">
-                    <span class="fa-stack">
-                        <i class="fa fa-square fa-stack-2x"></i>
-                        <i class="fa fa-search-plus fa-stack-1x fa-inverse"></i>
-                    </span>
-                </a>
-                <a href="#" class="table-link text-info" onclick="editOrder(${index})">
-                    <span class="fa-stack">
-                        <i class="fa fa-square fa-stack-2x"></i>
-                        <i class="fa fa-pencil fa-stack-1x fa-inverse"></i>
-                    </span>
-                </a>
-                <a href="#" class="table-link danger" onclick="confirmDelete(${header.documentKey.number})">
-                    <span class="fa-stack">
-                        <i class="fa fa-square fa-stack-2x"></i>
-                        <i class="fa fa-trash-o fa-stack-1x fa-inverse"></i>
-                    </span>
-                </a>
-            </td>
-        `;
-        
-        // Append the new row to the tbody
-        tbodyOrders.appendChild(newRowOrder);
-    });
-}
 
 
 
