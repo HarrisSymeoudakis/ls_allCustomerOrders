@@ -13,9 +13,10 @@ function clearAndRefresh() {
     const customerLastNameInput = document.getElementById("input3").value;
     const storeIdInput = document.getElementById("input4").value;
     const orderNumberInput = parseInt(document.getElementById("input5").value, 10);
+    const documentDateInput = document.getElementById("input6").value; // Get date input value
 
     // Fetch and display orders with cleared input values
-    fetchAndDisplayOrders(customerIdInput, customerNameInput, customerLastNameInput, storeIdInput, orderNumberInput);
+    fetchAndDisplayOrders(customerIdInput, customerNameInput, customerLastNameInput, storeIdInput, orderNumberInput,documentDateInput);
 }
 
 
@@ -43,6 +44,7 @@ clearAndRefresh();
           searchText,
           searchText,
           searchText,
+            searchText,
           searchText
         );
       }, 500); // 500 milliseconds debounce time
@@ -65,6 +67,7 @@ clearAndRefresh();
         document.getElementById("input5").value,
         10
       );
+const documentDateInput = document.getElementById("input6").value; // Get date input value
 
       // Fetch and filter orders
       fetchAndDisplayOrders(
@@ -72,7 +75,8 @@ clearAndRefresh();
         customerNameInput,
         customerLastNameInput,
         storeIdInput,
-        orderNumberInput
+        orderNumberInput,
+          documentDateInput
       );
 
     //   document.getElementById("input1").value="";
@@ -87,7 +91,8 @@ clearAndRefresh();
     customerNameInput,
     customerLastNameInput,
     storeIdInput,
-    orderNumberInput
+    orderNumberInput,
+      documentDateInput
   ) {
     fetch(
       "https://ls-allcustomerordersserver.onrender.com/swagger/AllCustomerActiveOrders"
@@ -153,7 +158,9 @@ clearAndRefresh();
               (storeIdInput ? header.storeId.toLowerCase() === storeIdInput.toLowerCase() : true) &&
               (orderNumberInput
                 ? header.documentKey.number === orderNumberInput
-                : true);
+                : true) &&
+                 (!documentDateInput || new Date(header.documentDate).toISOString().split('T')[0] === documentDateInput) // Compare date part only
+            ;
 
             if (matches) {
               // Calculate total quantity and total amount for the order
@@ -231,7 +238,8 @@ clearAndRefresh();
     customerNameInput,
     customerLastNameInput,
     storeIdInput,
-    orderNumberInput
+    orderNumberInput,
+      documentDateInput
   ) {
     console.log(customerIdInput);
     fetch(
@@ -301,6 +309,7 @@ clearAndRefresh();
               (storeIdInput
                 ? header.storeId.toLowerCase() == storeIdInput.toLowerCase()
                 : true) ||
+                  (!documentDateInput || new Date(header.documentDate).toISOString().split('T')[0] === documentDateInput)
               (orderNumberInput
                 ? header.documentKey.number == orderNumberInput
                 : true);
