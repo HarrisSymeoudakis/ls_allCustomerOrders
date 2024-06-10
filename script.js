@@ -451,6 +451,7 @@
           .then((response) => response.json())
           .then((data) => {
             const order = data[orderIndex];
+           console.log(order);
 
             // Store the order data globally for easy access
             window.ordersData = data;
