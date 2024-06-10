@@ -70,12 +70,12 @@ const searchBarInput = document.getElementById("search").value; // Get search ba
         const header = order.header;
         const searchTerm = searchBarInput.toLowerCase();
         return (
-          header.customer.id.toLowerCase().includes(searchTerm) ||
-          header.customer.firstName.toLowerCase().includes(searchTerm) ||
-          header.customer.lastName.toLowerCase().includes(searchTerm) ||
-          header.storeId.toLowerCase().includes(searchTerm) ||
-          header.documentKey.number.toString().includes(searchTerm) ||
-          new Date(header.documentDate).toISOString().split('T')[0].includes(searchTerm)
+          header.customer.id.toLowerCase()==(searchTerm) ||
+          header.customer.firstName.toLowerCase()==(searchTerm) ||
+          header.customer.lastName.toLowerCase()==(searchTerm) ||
+          header.storeId.toLowerCase()==(searchTerm) ||
+          header.documentKey.number.toString()==(searchTerm) ||
+          new Date(header.documentDate).toISOString().split('T')[0]==(searchTerm)
         );
       });
 
