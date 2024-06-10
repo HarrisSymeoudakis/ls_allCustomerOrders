@@ -1,4 +1,4 @@
- // Clear button functionality
+// Clear button functionality
       document.getElementById("delete").addEventListener("click", () => {
         document.getElementById("input1").value = "";
         document.getElementById("input2").value = "";
