@@ -82,8 +82,7 @@ const documentDateInput = document.getElementById("input6").value; // Get date i
     //   document.getElementById("input3").value="";
     //   document.getElementById("input4").value="";
     //   document.getElementById("input5").value="";
-    });
-
+   
   function fetchAndDisplayOrders(
     customerIdInput,
     customerNameInput,
