@@ -52,6 +52,7 @@ function trySearchBarFiltering(searchText){
           searchText,
           searchText,
           searchText,
+        searchText,
           searchText,
           searchText
         );
@@ -238,6 +239,7 @@ const documentDateInput = document.getElementById("input6").value; // Get date i
     customerNameInput,
     customerLastNameInput,
     storeIdInput,
+      documentDateInput,
     orderNumberInput
   ) {
     console.log(customerIdInput);
@@ -308,7 +310,7 @@ const documentDateInput = document.getElementById("input6").value; // Get date i
               (storeIdInput
                 ? header.storeId.toLowerCase() == storeIdInput.toLowerCase()
                 : true) ||
-                  (!documentDateInput || new Date(header.documentDate).toISOString().split('T')[0] === documentDateInput)
+                  (!documentDateInput || new Date(header.documentDate).toISOString().split('T')[0] === documentDateInput)||
               (orderNumberInput
                 ? header.documentKey.number == orderNumberInput
                 : true);
