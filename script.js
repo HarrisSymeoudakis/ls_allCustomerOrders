@@ -6,6 +6,23 @@ document.getElementById("delete").addEventListener("click", () => {
     document.getElementById("input4").value = "";
     document.getElementById("input5").value = "";
     document.getElementById("input6").value = "";
+
+    const customerIdInput = document.getElementById("input1").value;
+      const customerNameInput = document.getElementById("input2").value;
+      const customerLastNameInput = document.getElementById("input3").value;
+      const storeIdInput = document.getElementById("input4").value;
+      const orderNumberInput = parseInt(
+        document.getElementById("input5").value,
+        10
+      );
+
+    fetchAndDisplayOrders(
+        customerIdInput,
+        customerNameInput,
+        customerLastNameInput,
+        storeIdInput,
+        orderNumberInput
+      );
   });
 
   fetch("https://ls-allcustomerordersserver.onrender.com/swagger/AllCustomerActiveOrders")
