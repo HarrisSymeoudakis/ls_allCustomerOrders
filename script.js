@@ -52,12 +52,9 @@ clearAndRefresh();
   });
 
   // Event listener for the search button
-  document
-    .getElementById("searchButton")
-    .addEventListener("click", (event) => {
-      // Prevent form submission
-      event.preventDefault();
 
+function searchOnClick(){
+  
       // Get input fields values to match
       const customerIdInput = document.getElementById("input1").value;
       const customerNameInput = document.getElementById("input2").value;
@@ -78,6 +75,7 @@ const documentDateInput = document.getElementById("input6").value; // Get date i
         orderNumberInput,
           documentDateInput
       );
+}
 
     //   document.getElementById("input1").value="";
     //   document.getElementById("input2").value="";
