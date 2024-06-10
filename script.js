@@ -508,7 +508,7 @@
                                                                                             .quantities
                                                                                             .quantity;
                                                                                         const unitPrice =
-                                                                                          line.unitPrice?line.unitPrice : 200;
+                                                                                          line.unitPrice?line.unitPrice : 777;
                                                                                         const discount =
                                                                                           line.discounts &&
                                                                                           line
@@ -669,7 +669,7 @@
                                                                                             .quantities
                                                                                             .quantity;
                                                                                         const unitPrice =
-                                                                                          line.unitPrice;
+                                                                                          line.unitPrice? line.unitPrice:777;
                                                                                         const discount =
                                                                                           line.discounts &&
                                                                                           line
