@@ -1355,6 +1355,7 @@
       .s007 form .inner-form .advance-search .row.third {
         margin-bottom: 0;
           text-align: right;
+                 justify-content: flex-end; 
       }
 
       .s007 form .inner-form .advance-search .input-field {
