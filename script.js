@@ -61,12 +61,12 @@ const searchBarInput = document.getElementById("search").value; // Get search ba
 
 
  return (
-          (!customerIdInput || header.customer.id.toLowerCase() === customerIdInput.toLowerCase()) &&
-          (!customerNameInput || header.customer.firstName.toLowerCase() === customerNameInput.toLowerCase()) &&
-          (!customerLastNameInput || header.customer.lastName.toLowerCase() === customerLastNameInput.toLowerCase()) &&
-	 (!emailInput || header.customer.emails[0].value.toLowerCase() === emailInput.toLowerCase()) &&
-          (!storeIdInput || header.storeId.toLowerCase() === storeIdInput.toLowerCase()) &&
-          (!orderNumberInput || header.documentKey.number === orderNumberInput) &&
+          (!customerIdInput || header.customer.id.toLowerCase().includes(customerIdInput.toLowerCase())) &&
+          (!customerNameInput || header.customer.firstName.toLowerCase().includes(customerNameInput.toLowerCase())) &&
+          (!customerLastNameInput || header.customer.lastName.toLowerCase().includes(customerLastNameInput.toLowerCase())) &&
+	 (!emailInput || header.customer.emails[0].value.toLowerCase().includes(emailInput.toLowerCase())) &&
+          (!storeIdInput || header.storeId.toLowerCase().includes(storeIdInput.toLowerCase())) &&
+          (!orderNumberInput || header.documentKey.number===(orderNumberInput) &&
           (!documentDateInput || new Date(header.documentDate).toISOString().split('T')[0] === documentDateInput) &&
 	 (!deliveryDateInput || new Date(header.deliveryDate).toISOString().split('T')[0] === deliveryDateInput)
         );
