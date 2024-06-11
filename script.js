@@ -3,9 +3,11 @@ function fetchAndDisplayOrders() {
     const customerIdInput = document.getElementById("input1").value;
 const customerNameInput = document.getElementById("input2").value;
 const customerLastNameInput = document.getElementById("input3").value;
-const storeIdInput = document.getElementById("input4").value;
+const emailInput = document.getElementById("input4").value;
 const orderNumberInput = parseInt(document.getElementById("input5").value, 10);
-const documentDateInput = document.getElementById("input6").value; // Get date input value
+const storeIdInput = document.getElementById("input6").value; // Get date input value
+const documentDateInput = document.getElementById("input7").value; // Get date input value
+const deliveryDateInput = document.getElementById("input8").value;
 const searchBarInput = document.getElementById("search").value; // Get search bar input value
 
   fetch("https://ls-allcustomerordersserver.onrender.com/swagger/AllCustomerActiveOrders")
@@ -60,29 +62,40 @@ const searchBarInput = document.getElementById("search").value; // Get search ba
           (!customerNameInput || header.customer.firstName.toLowerCase() === customerNameInput.toLowerCase()) &&
           (!customerLastNameInput || header.customer.lastName.toLowerCase() === customerLastNameInput.toLowerCase()) &&
           (!storeIdInput || header.storeId.toLowerCase() === storeIdInput.toLowerCase()) &&
+		  (!emailInput || header.customer.emails[0].value.toLowerCase() === emailInput.toLowerCase()) &&
           (!orderNumberInput || header.documentKey.number === orderNumberInput) &&
-          (!documentDateInput || new Date(header.documentDate).toISOString().split('T')[0] === documentDateInput)
+          (!documentDateInput || new Date(header.documentDate).toISOString().split('T')[0] === documentDateInput)&&
+		  (!deliveryDateInput || new Date(header.deliveryDate).toISOString().split('T')[0] === deliveryDateInput)
         );
       });
 
+		
       // Filter data with OR condition for the search bar input
+	  const searchTerm = searchBarInput.toLowerCase();
       const searchFilteredOrders = data.filter((order) => {
         const header = order.header;
-        const searchTerm = searchBarInput.toLowerCase();
+        
         return (
           header.customer.id.toLowerCase()==(searchTerm) ||
           header.customer.firstName.toLowerCase()==(searchTerm) ||
           header.customer.lastName.toLowerCase()==(searchTerm) ||
           header.storeId.toLowerCase()==(searchTerm) ||
+		  header.customer.emails[0].value.toLowerCase()==(searchTerm) ||
           header.documentKey.number.toString()==(searchTerm) ||
-          new Date(header.documentDate).toISOString().split('T')[0]==(searchTerm)
+          new Date(header.documentDate).toISOString().split('T')[0]==(searchTerm)||
+		  new Date(header.deliveryDate).toISOString().split('T')[0]==(searchTerm)
         );
       });
 
+let finalFilteredOrders;
+		if(searchTerm !=""){
       // Combine results with AND condition
-      const finalFilteredOrders = filteredOrders.filter((order) =>
+       finalFilteredOrders = filteredOrders.filter((order) =>
         searchFilteredOrders.includes(order)
-      );
+      );}
+	  else{
+	   finalFilteredOrders =filteredOrders;
+	  }
 
       // Populate table with final filtered orders
       finalFilteredOrders.forEach((order, index) => {
@@ -154,7 +167,8 @@ function clearAndRefresh() {
     document.getElementById("input4").value = "";
     document.getElementById("input5").value = "";
     document.getElementById("input6").value = "";
-
+	document.getElementById("input7").value = "";
+document.getElementById("input8").value = "";
     
     fetchAndDisplayOrders();
 }
@@ -740,6 +754,10 @@ document.getElementById("searchButton").addEventListener("click", searchOnClick)
       "#orderModal .cart-body h3"
     ).textContent = `€${totalAmount}`;
   }
+  
+  function redirectToUrl() {
+  window.location.href = "https://retail-services.cegid.cloud/et/pos/";
+}
 
   function deleteOrder(orderIndex) {
     // Your logic to delete the order from the server or local data
