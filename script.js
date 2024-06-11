@@ -183,6 +183,11 @@ clearAndRefresh();
     });
 
   document.addEventListener("DOMContentLoaded", (event) => {
+
+	   document.getElementById('return').addEventListener('click', (event) => {
+    event.preventDefault();
+    redirectToUrl();
+  });
     const searchInput = document.getElementById("search");
     let debounceTimeout;
 
