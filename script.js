@@ -57,15 +57,19 @@ const searchBarInput = document.getElementById("search").value; // Get search ba
       // Filter data with AND condition among the six input fields
       const filteredOrders = data.filter((order) => {
         const header = order.header;
+	      const searchTerm = searchBarInput.toLowerCase();
         return (
-          (!customerIdInput || header.customer.id.toLowerCase() === customerIdInput.toLowerCase()) &&
-          (!customerNameInput || header.customer.firstName.toLowerCase() === customerNameInput.toLowerCase()) &&
-          (!customerLastNameInput || header.customer.lastName.toLowerCase() === customerLastNameInput.toLowerCase()) &&
-          (!storeIdInput || header.storeId.toLowerCase() === storeIdInput.toLowerCase()) &&
-		  (!emailInput || header.customer.emails[0].value.toLowerCase() === emailInput.toLowerCase()) &&
-          (!orderNumberInput || header.documentKey.number === orderNumberInput) &&
-          (!documentDateInput || new Date(header.documentDate).toISOString().split('T')[0] === documentDateInput)&&
-		  (!deliveryDateInput || new Date(header.deliveryDate).toISOString().split('T')[0] === deliveryDateInput)
+
+		header.customer.id.toLowerCase().includes(searchTerm) ||
+          header.customer.firstName.toLowerCase().includes(searchTerm) ||
+          header.customer.lastName.toLowerCase().includes(searchTerm) ||
+          header.storeId.toLowerCase().includes(searchTerm) ||
+		header.customer.emails[0].value.toLowerCase().includes(searchTerm)  ||
+          header.documentKey.number.toString().includes(searchTerm) ||
+          new Date(header.documentDate).toISOString().split('T')[0].includes(searchTerm)||
+new Date(header.deliveryDate).toISOString().split('T')[0].includes(searchTerm)
+		
+          
         );
       });
 
