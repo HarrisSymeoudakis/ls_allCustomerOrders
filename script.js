@@ -58,6 +58,27 @@ const searchBarInput = document.getElementById("search").value; // Get search ba
       const filteredOrders = data.filter((order) => {
         const header = order.header;
 	      const searchTerm = searchBarInput.toLowerCase();
+
+
+ return (
+          (!customerIdInput || header.customer.id.toLowerCase() === customerIdInput.toLowerCase()) &&
+          (!customerNameInput || header.customer.firstName.toLowerCase() === customerNameInput.toLowerCase()) &&
+          (!customerLastNameInput || header.customer.lastName.toLowerCase() === customerLastNameInput.toLowerCase()) &&
+	 (!emailInput || header.customer.emails[0].value.toLowerCase() === emailInput.toLowerCase()) &&
+          (!storeIdInput || header.storeId.toLowerCase() === storeIdInput.toLowerCase()) &&
+          (!orderNumberInput || header.documentKey.number === orderNumberInput) &&
+          (!documentDateInput || new Date(header.documentDate).toISOString().split('T')[0] === documentDateInput) &&
+	 (!deliveryDateInput || new Date(header.deliveryDate).toISOString().split('T')[0] === deliveryDateInput)
+        );
+	      
+      });
+
+		
+      // Filter data with OR condition for the search bar input
+	  const searchTerm = searchBarInput.toLowerCase();
+      const searchFilteredOrders = data.filter((order) => {
+        const header = order.header;
+        
         return (
 
 		header.customer.id.toLowerCase().includes(searchTerm) ||
@@ -70,24 +91,6 @@ const searchBarInput = document.getElementById("search").value; // Get search ba
 new Date(header.deliveryDate).toISOString().split('T')[0].includes(searchTerm)
 		
           
-        );
-      });
-
-		
-      // Filter data with OR condition for the search bar input
-	  const searchTerm = searchBarInput.toLowerCase();
-      const searchFilteredOrders = data.filter((order) => {
-        const header = order.header;
-        
-        return (
-          header.customer.id.toLowerCase()==(searchTerm) ||
-          header.customer.firstName.toLowerCase()==(searchTerm) ||
-          header.customer.lastName.toLowerCase()==(searchTerm) ||
-          header.storeId.toLowerCase()==(searchTerm) ||
-		  header.customer.emails[0].value.toLowerCase()==(searchTerm) ||
-          header.documentKey.number.toString()==(searchTerm) ||
-          new Date(header.documentDate).toISOString().split('T')[0]==(searchTerm)||
-		  new Date(header.deliveryDate).toISOString().split('T')[0]==(searchTerm)
         );
       });
 
