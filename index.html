@@ -70,16 +70,18 @@
               </div>
             </div>
             <div class="row ">
-              <div class="input-field2">
-                <label for="input4">Store Id</label>
+			  <div class="input-field2">
+                <label for="input4">Customer Email</label>
                 <input
                   type="text"
                   class="form-control"
                   id="input4"
                   value=""
-                  placeholder="Filter By Store Id"
+                  placeholder="Filter By Email"
                 />
               </div>
+			
+              
               <div class="input-field2">
                 <label for="input5">Order Number</label>
                 <input
@@ -90,30 +92,48 @@
                   placeholder="Filter By Order Number"
                 />
               </div>
+			  <div class="input-field2">
+                <label for="input6">Store Id</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="input6"
+                  value=""
+                  placeholder="Filter By Store Id"
+                />
+              </div>
               
 
             </div>
 <div class="row second">
 		  <div class="input-field2">
-    <label for="input6">Document Date</label>
+    <label for="input7">Document Date</label>
     <input
         type="date"
         class="form-control"
-        id="input6"
+        id="input7"
         value=""
         placeholder="Filter By Document Date"
     />
 </div>
+<div class="input-field2">
+    <label for="input8">Delivery Date</label>
+    <input
+        type="date"
+        class="form-control"
+        id="input8"
+        value=""
+        placeholder="Filter By Delivery Date"
+    />
+</div>
 </div>
             <div class="row third">
-              <div class="text-right mt-3"></div>
-              <div class="input-field">
-                <button class="btn btn-primary" id="searchButton">
-                  Search
-                </button>
-                <button class="btn btn-info" id="delete" onclick="clearAndRefresh()" >Clear</button>
-              </div>
-            </div>
+  <div class="text-right mt-3 input-field-container">
+    <button class="btn btn-primary" id="searchButton">Search</button>
+    <button class="btn btn-default" id="delete" onclick="clearAndRefresh()">Clear</button>
+    <button class="btn btn-default" id="return"  onclick="redirectToUrl()">Return</button>
+  </div>
+</div>
           </div>
         </div>
       </form>
