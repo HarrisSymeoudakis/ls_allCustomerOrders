@@ -186,6 +186,7 @@ clearAndRefresh();
     const searchInput = document.getElementById("search");
     let debounceTimeout;
 
+	  document.getElementById('return').addEventListener('click', redirectToUrl);
     searchInput.addEventListener("input", (event) => {
       clearTimeout(debounceTimeout);
       debounceTimeout = setTimeout(() => {
