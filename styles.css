@@ -9,6 +9,14 @@
       }
 
 /* Center the modal */
+
+.orderResults {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  max-width: 80%; /* Set max width to 80% */
+  margin: auto; /* Center horizontally */
+}
 .modal-dialog {
   display: flex;
   justify-content: center;
