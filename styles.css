@@ -17,7 +17,27 @@
   max-width: 80%; /* Set max width to 80% */
   margin: auto; /* Center horizontally */
 }
+.modal-dialog {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  max-width: 80%; /* Set max width to 80% */
+  margin: auto; /* Center horizontally */
+}
 
+.modal-content {
+  width: 100%; /* Make content width 100% of the dialog */
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.modal-body {
+  overflow-y: auto; /* Add scrolling if the content is too long */
+}
 
 .input-field-container {
   display: flex;
