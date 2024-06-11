@@ -8,6 +8,15 @@
           margin-top: 20px;
       }
 
+
+.input-field-container {
+  display: flex;
+  justify-content: flex-end; /* Align items to the end */
+}
+
+.input-field-container .btn {
+  margin-left: 10px; /* Add space between buttons */
+}
       .top-right-image {
         position: relative;
        margin-top:10px;
