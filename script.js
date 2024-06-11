@@ -66,7 +66,7 @@ const searchBarInput = document.getElementById("search").value; // Get search ba
           (!customerLastNameInput || header.customer.lastName.toLowerCase().includes(customerLastNameInput.toLowerCase())) &&
 	 (!emailInput || header.customer.emails[0].value.toLowerCase().includes(emailInput.toLowerCase())) &&
           (!storeIdInput || header.storeId.toLowerCase().includes(storeIdInput.toLowerCase())) &&
-          (!orderNumberInput || header.documentKey.number===(orderNumberInput) &&
+          (!orderNumberInput || header.documentKey.number===orderNumberInput) &&
           (!documentDateInput || new Date(header.documentDate).toISOString().split('T')[0] === documentDateInput) &&
 	 (!deliveryDateInput || new Date(header.deliveryDate).toISOString().split('T')[0] === deliveryDateInput)
         );
