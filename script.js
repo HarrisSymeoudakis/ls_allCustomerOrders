@@ -371,7 +371,7 @@ document.getElementById("searchButton").addEventListener("click", searchOnClick)
                                                                                         .quantities
                                                                                         .quantity;
                                                                                     const unitPrice =
-                                                                                      line.unitPrice?line.unitPrice : 777;
+                                                                                      line.unitPrice?line.unitPrice : 0;
                                                                                     const discount =
                                                                                       line.discounts &&
                                                                                       line
